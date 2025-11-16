@@ -70,7 +70,34 @@ Ini adalah rancangan awal tabel yang kita butuhkan.
 ## 5. Struktur Folder (Repo)
 
 Untuk menjaga kerapian, kita akan gunakan struktur folder berikut:
-/ ├── admin/ # (Backend) Halaman khusus Admin (CRUD Menu) │ ├── index.php # (Login Admin) │ ├── dashboard.php │ ├── crud_menu.php │ ├── crud_kategori.php │ └── logout.php │ ├── dapur/ # (Backend) Halaman khusus Dapur (Lihat Pesanan) │ ├── index.php # (Tampilan Pesanan) │ └── api_get_pesanan.php # (File JSON untuk di-fetch oleh JS) │ ├── includes/ # (Backend) File-file pendukung │ ├── db_connect.php # (Koneksi database) │ └── functions.php # (Fungsi-fungsi PHP re-usable) │ ├── css/ # (Frontend) Semua file CSS │ └── style.css │ ├── js/ # (Frontend) Semua file JavaScript │ ├── main.js # (Logika keranjang, pop-up, checkout) │ └── dapur.js # (Logika AJAX auto-refresh halaman dapur) │ ├── img/ # (Lain-lain) Tempat upload foto-foto menu │ ├── index.php # (Bersama) Halaman utama / Menu (dilihat pelanggan) ├── proses_pesanan.php # (Backend) File untuk menerima data pesanan dari JS └── README.md # (Dokumentasi ini)
+/
+├── admin/                  # (Backend) Halaman khusus Admin (CRUD Menu)
+│   ├── index.php           # (Login Admin)
+│   ├── dashboard.php
+│   ├── crud_menu.php
+│   ├── crud_kategori.php
+│   └── logout.php
+│
+├── dapur/                  # (Backend) Halaman khusus Dapur (Lihat Pesanan)
+│   ├── index.php           # (Tampilan Pesanan)
+│   └── api_get_pesanan.php # (File JSON untuk di-fetch oleh JS)
+│
+├── includes/               # (Backend) File-file pendukung
+│   ├── db_connect.php      # (Koneksi database)
+│   └── functions.php       # (Fungsi-fungsi PHP re-usable)
+│
+├── css/                    # (Frontend) Semua file CSS
+│   └── style.css
+│
+├── js/                     # (Frontend) Semua file JavaScript
+│   ├── main.js             # (Logika keranjang, pop-up, checkout)
+│   └── dapur.js            # (Logika AJAX auto-refresh halaman dapur)
+│
+├── img/                    # (Lain-lain) Tempat upload foto-foto menu
+│
+├── index.php               # (Bersama) Halaman utama / Menu (dilihat pelanggan)
+├── proses_pesanan.php      # (Backend) File untuk menerima data pesanan dari JS
+└── README.md               # (Dokumentasi ini)
 
 ## 6. Pembagian Tugas & Alur Kerja
 
