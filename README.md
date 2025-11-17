@@ -1,6 +1,6 @@
 # Proyek UAS: Sistem Pemesanan Restoran (QR Code)
 
-Repository ini berisi kode sumber untuk proyek Ujian Akhir Semester (UAS) mata kuliah Pemrograman Web. Proyek ini adalah sistem pemesanan menu digital berbasis web yang diakses pelanggan melalui QR code di meja.
+Repository ini berisi kode sumber untuk proyek Ujian Akhir Semester (UAS) mata kuliah Web Programming 1. Proyek ini adalah sistem pemesanan menu digital berbasis web yang diakses pelanggan melalui QR code di meja.
 
 ## 1. Deskripsi & Alur Proyek
 
@@ -27,22 +27,24 @@ Tujuan utama proyek ini adalah membuat aplikasi web yang memungkinkan pelanggan 
 ### Sisi Pelanggan (Frontend)
 - [ ] Tampilan daftar menu berdasarkan kategori (Makanan, Minuman, Kopi, Dll).
 - [ ] Pop-up untuk memilih varian menu (Contoh: Panas/Dingin, Level Pedas, Topping).
+- [ ] Fitur untuk menambah catatan kustom per item (Contoh: "Jangan pakai bawang").
 - [ ] Sidebar Keranjang (Cart) yang interaktif (Tambah/Kurang/Hapus item).
 - [ ] Proses Checkout (Otomatis terisi nomor meja, input nama pemesan).
 - [ ] Opsi Pembayaran:
     - [ ] Bayar di Kasir (Default).
-    - [ ] Bayar Online (Integrasi Sandbox Payment Gateway, misal: Midtrans).
+    - [ ] Bayar Online (Integrasi Sandbox Payment Gateway, misal: Midtrans or Qris).
 
 ### Sisi Admin (Backend)
 - [ ] Halaman login yang aman untuk Admin.
 - [ ] CRUD (Create, Read, Update, Delete) untuk **Kategori Menu**.
 - [ ] CRUD (Create, Read, Update, Delete) untuk **Item Menu** (termasuk foto, harga, deskripsi).
 - [ ] CRUD (Create, Read, Update, Delete) untuk **Varian Menu** (menghubungkan varian ke item menu).
+- [ ] Fitur Export Laporan Transaksi ke CSV/Excel.
 
 ### Sisi Dapur (Backend)
 - [ ] Halaman Tampilan Pesanan (`dapur.php`).
 - [ ] Tampilan pesanan baru secara real-time (menggunakan AJAX/Fetch untuk auto-refresh).
-- [ ] Fitur untuk mengubah **Status Pesanan** (Diterima, Dibuat, Selesai, Diantar).
+- [ ] Fitur untuk mengubah **Status Pesanan** (Diterima, Dibuat, Selesai).
 
 ## 3. Teknologi yang Digunakan
 
@@ -63,9 +65,9 @@ Ini adalah rancangan awal tabel yang kita butuhkan.
 | **tbl_varian_grup** | `id_grup_varian` (PK), `id_menu` (FK), `nama_grup`, `tipe_pilihan` | Contoh: (Menu: Kopi Susu, Nama: Suhu, Tipe: 'radio'). |
 | **tbl_varian_opsi** | `id_opsi_varian` (PK), `id_grup_varian` (FK), `nama_opsi`, `tambahan_harga` | Contoh: (Grup: Suhu, Opsi: 'Dingin', Harga: +1000). |
 | **tbl_pesanan** | `id_pesanan` (PK), `no_meja`, `nama_pemesan`, `total_harga`, `status_pesanan`, `status_bayar`, `metode_bayar`, `timestamp` | "Header" dari setiap pesanan. |
-| **tbl_pesanan_detail** | `id_detail` (PK), `id_pesanan` (FK), `id_menu` (FK), `jumlah`, `harga_saat_pesan`, `subtotal`, `catatan_varian` | Item-item di dalam satu pesanan. |
+| **tbl_pesanan_detail** | `id_detail` (PK), `id_pesanan` (FK), `id_menu` (FK), `jumlah`, `harga_saat_pesan`, `subtotal`, `catatan_varian`, **`catatan_kustom` (BARU)** | Item-item di dalam satu pesanan. |
 
-*(Catadtan: `catatan_varian` di `tbl_pesanan_detail` akan diisi oleh JS, contoh: "Suhu: Dingin, Level: 3, Topping: Keju")*
+*(Catatan: `catatan_varian` = "Suhu: Dingin, Level: 3". `catatan_kustom` = "Jangan pakai bawang".)*
 
 ## 5. Struktur Folder (Repo)
 
@@ -76,6 +78,7 @@ Untuk menjaga kerapian, kita akan gunakan struktur folder berikut:
 │   ├── dashboard.php
 │   ├── crud_menu.php
 │   ├── crud_kategori.php
+│   ├── export_laporan.php
 │   └── logout.php
 │
 ├── dapur/                  # (Backend) Halaman khusus Dapur (Lihat Pesanan)
@@ -110,21 +113,24 @@ Tugas utama: Fokus pada **Tampilan (View)** dan **Interaksi (Client-side JS)**.
 * Membuat `main.js` (di `index.php`):
     * Logika Pop-up Varian.
     * Logika Keranjang (tambah/kurang/hapus).
+    * Menyediakan input untuk `catatan_kustom`.
     * Mengirim data keranjang (Checkout) ke `proses_pesanan.php`.
 * Membuat `dapur.js` (di `dapur/index.php`):
     * Logika `fetch` / AJAX untuk memanggil `api_get_pesanan.php` setiap 10 detik.
     * Merender data pesanan baru ke HTML tanpa refresh halaman.
 * Mendesain/Menata file-file PHP yang dibuat Tim Backend (`index.php`, `admin/*.php`, `dapur/*.php`).
+* **(BARU)** Menambahkan tombol/link di `admin/dashboard.php` untuk memicu download laporan (link ke `export_laporan.php`).
 
 ### 🔴 Tim Backend (3 Orang)
 
 Tugas utama: Fokus pada **Logika Server (PHP)** dan **Manajemen Data (MySQL)**.
-* Merancang, membuat, dan mengelola **Database MySQL**.
+* Merancang, membuat, dan mengelola **Database MySQL** (termasuk `catatan_kustom`).
 * Membuat `includes/db_connect.php` dan `functions.php`.
 * Membuat **seluruh** fungsionalitas di folder `/admin/` (Login, CRUD Kategori, Menu, Varian).
+* **(BARU)** Membuat file `admin/export_laporan.php` untuk meng-query data transaksi dan meng-generate file .csv.
 * Membuat **seluruh** fungsionalitas di folder `/dapur/` (Logika `index.php` untuk menampilkan data dan `api_get_pesanan.php` untuk mengirim data JSON).
 * Menyiapkan `index.php` dengan logika PHP untuk menampilkan data menu dari DB (agar Tim Frontend bisa menatanya).
-* Membuat `proses_pesanan.php` yang siap menerima data JSON dari `main.js` (Frontend) dan menyimpannya ke `tbl_pesanan`.
+* Membuat `proses_pesanan.php` yang siap menerima data JSON dari `main.js` (Frontend) dan menyimpannya ke `tbl_pesanan` dan `tbl_pesanan_detail`.
 
 ### 🤝 Titik Temu / "Kontrak" Penting
 
@@ -138,8 +144,18 @@ Tugas utama: Fokus pada **Logika Server (PHP)** dan **Manajemen Data (MySQL)**.
           "nama_pemesan": "Raditya",
           "metode_bayar": "kasir",
           "items": [
-            { "id_menu": 1, "jumlah": 2, "catatan": "Panas, Level 1" },
-            { "id_menu": 3, "jumlah": 1, "catatan": "Topping: Telur" }
+            { 
+              "id_menu": 1, 
+              "jumlah": 2, 
+              "catatan_varian": "Panas, Level 1", 
+              "catatan_kustom": "" 
+            },
+            { 
+              "id_menu": 3, 
+              "jumlah": 1, 
+              "catatan_varian": "Topping: Telur", 
+              "catatan_kustom": "Tolong jangan pakai bawang" 
+            }
           ]
         }
         ```
@@ -147,7 +163,5 @@ Tugas utama: Fokus pada **Logika Server (PHP)** dan **Manajemen Data (MySQL)**.
 2.  **Refresh Dapur (`dapur.js` -> `dapur/api_get_pesanan.php`)**
     * **Backend (PHP)** membuat `api_get_pesanan.php` yang jika diakses akan mengembalikan data pesanan (misal: yang statusnya 'Diterima') dalam format **JSON**.
     * **Frontend (JS)** akan memanggil file API tersebut setiap 10 detik untuk mendapat data JSON terbaru dan menampilkannya di Halaman Dapur.
-
-Mari kita mulai dari Fase 0 (Setup) dan Fase 1 (Admin) terlebih dahulu.
 
 Semangat!

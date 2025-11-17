@@ -1,0 +1,1 @@
+document.getElementById("dapur").classList.add("active");
