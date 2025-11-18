@@ -164,4 +164,57 @@ Tugas utama: Fokus pada **Logika Server (PHP)** dan **Manajemen Data (MySQL)**.
     * **Backend (PHP)** membuat `api_get_pesanan.php` yang jika diakses akan mengembalikan data pesanan (misal: yang statusnya 'Diterima') dalam format **JSON**.
     * **Frontend (JS)** akan memanggil file API tersebut setiap 10 detik untuk mendapat data JSON terbaru dan menampilkannya di Halaman Dapur.
 
+## 7. Panduan Alur Kerja Git (Git Workflow)
+
+Untuk menjaga agar *repository* utama (`main`) tetap bersih dan menghindari "konflik" kode, semua pekerjaan (fitur baru, perbaikan *bug*) **HARUS** dibuat di **branch** terpisah.
+
+Berikut adalah alur kerja yang wajib diikuti oleh semua anggota tim.
+
+### Langkah 0: Persiapan Awal (Clone)
+
+**Hanya dilakukan SEKALI saat pertama kali bergabung ke proyek.**
+
+1.  Buka halaman GitHub repository proyek ini.
+2.  Klik tombol hijau **Code** dan salin URL-nya.
+3.  Buka Terminal / Command Prompt di folder tempat Anda ingin menyimpan proyek.
+4.  Jalankan perintah:
+    ```bash
+    git clone URL_REPOSITORY_ANDA
+    cd NAMA_FOLDER_PROYEK
+    ```
+### Langkah 1: Selalu Mulai dari `main` yang Terbaru
+
+Sebelum mulai *coding* fitur baru, pastikan kode di komputer Anda adalah yang paling baru dari GitHub.
+
+```bash
+# 1. Pindah dulu ke branch 'main' (jika Anda sedang di branch lain)
+git checkout main
+
+# 2. Cek apakah ada update di server (GitHub)
+# Ini cara aman untuk 'mengintip' tanpa langsung menggabung
+git fetch origin
+
+# 3. Tarik (pull) semua perubahan terbaru dari 'main' ke komputer Anda
+git pull origin main
+
+**JANGAN CODING DI BRANCH MAIN LANGSUNG, BUAT BRANCH BARU!! **
+
+# 1. Buat branch baru. (Contoh: Tim Backend membuat fitur login)
+git branch backend-login
+
+# 2. Pindah ke branch baru tersebut
+git checkout backend-login
+
+** CARA PUSH KE GITHUB!! **
+
+# 1. Tambahkan semua file yang Anda ubah
+git add .
+
+# 2. Simpan dengan pesan yang jelas
+git commit -m "Selesai menambahkan logika untuk admin login"
+
+# 'origin' adalah nama server (GitHub)
+# 'backend-login' adalah nama branch Anda
+git push origin backend-login
+
 Semangat!
