@@ -83,29 +83,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CRUD Kategori - Admin</title>
-  <style>
-        /* CSS Sederhana untuk demo */
-        body { font-family: Arial, sans-serif; background-color: #f4f4f4; }
-        .container { max-width: 800px; margin: 30px auto; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
-        h1 { border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px;}
-        .nav-links a { margin-right: 15px; text-decoration: none; color: #007bff; }
-        .form-crud { background: #f9f9f9; padding: 15px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #eee; }
-        .form-crud input[type="text"] { padding: 8px; width: 60%; margin-right: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        .form-crud button { padding: 8px 15px; background-color: #ff5722; color: white; border: none; border-radius: 4px; cursor: pointer; }
-        .form-crud button.update { background-color: #28a745; }
-        .form-crud a { text-decoration: none; color: #dc3545; margin-left: 10px; }
-        .alert-success { background-color: #d4edda; color: #155724; padding: 10px; border-radius: 5px; margin-bottom: 20px; font-weight: bold; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        table, th, td { border: 1px solid #ddd; }
-        th, td { padding: 10px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        .aksi a { margin-right: 8px; text-decoration: none; color: #007bff; }
-        .aksi a.hapus { color: #dc3545; }
-    </style>
+  <link rel="stylesheet" href="../css/style.css?v=3">
 </head>
 <body>
   
-  <div class="container">
+  <div class="container-admin">
     <h1>Kelola Kategori Menu</h1>
     <div class="nav-links">
       <a href="dashboard.php">&larr; Kembali ke Dashboard</a>
@@ -119,25 +101,25 @@
       </div>
     <?php endif; ?>
 
-    <div class="form-crud">
+    <div class="form-card">
       <h3>
         <?php echo $kategori_edit ? 'Ubah Kategori' : 'Tambah Kategori Baru'; ?>
       </h3>
-      <form action="crud_kategori.php" method="POST">
+      <form action="crud_kategori.php" method="POST" class="form-inline">
         <?php if ($kategori_edit): ?>
           <input type="hidden" name="id_kategori" value="<?php echo $kategori_edit['id_kategori']; ?>">
           <input type="text" name="nama_kategori" value="<?php echo htmlspecialchars($kategori_edit['nama_kategori']); ?>" required>
-          <button type="submit" name="update_kategori" class="update">Update</button>
-          <a href="crud_kategori.php">Batal</a>
+          <button type="submit" name="update_kategori" class="btn btn-success">Update</button>
+          <a href="crud_kategori.php" class="btn btn-danger">Batal</a>
         <?php else: ?>
           <input type="text" name="nama_kategori" placeholder="Nama Kategori, cth: Makanan Utama" required>
-          <button type="submit" name="tambah_kategori">Tambah</button>
+          <button type="submit" name="tambah_kategori" class="btn btn-primary">Tambah</button>
           <?php endif; ?>
       </form>
     </div>
     
     <h2>Daftar Kategori</h2>
-    <table>
+    <table class="data-table">
       <thead>
         <tr>
           <th>ID</th>

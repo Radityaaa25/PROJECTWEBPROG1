@@ -30,21 +30,11 @@ $list_pesanan = fetch_all(query($sql_pesanan));
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="refresh" content="10"> <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Dapur (No JS)</title>
-    <style>
-        body { font-family: Arial, sans-serif; background-color: #333; color: white; margin: 0; }
-        .header { background: #222; padding: 20px; text-align: center; }
-        .order-grid { display: flex; flex-wrap: wrap; gap: 20px; padding: 20px; }
-        .order-card { background: #444; padding: 15px; border-radius: 8px; width: 300px; border: 1px solid #555; }
-        .btn { padding: 8px 12px; border: none; cursor: pointer; border-radius: 4px; text-decoration: none; color: white; display: inline-block; margin-top: 10px; font-size: 0.9em; }
-        .btn-proses { background-color: #5bc0de; }
-        .btn-selesai { background-color: #5cb85c; }
-        ul { padding-left: 20px; }
-        li { margin-bottom: 5px; border-bottom: 1px dashed #555; padding-bottom: 5px; }
-    </style>
+    <title>Sistem Dapur (Auto-refresh)</title>
+    <link rel="stylesheet" href="../css/style.css?v=3">
 </head>
-<body>
-    <div class="header">
+<body class="kitchen-body">
+    <div class="kitchen-header">
         <h1>Kitchen Display System</h1>
         <p>Mode: PHP Native (Auto-refresh 10 detik)</p>
         <a href="../admin/dashboard.php" style="color: #aaf;">&larr; Kembali ke Admin</a>
@@ -56,10 +46,10 @@ $list_pesanan = fetch_all(query($sql_pesanan));
         <?php else: ?>
             <?php foreach ($list_pesanan as $order): ?>
                 <div class="order-card">
-                    <h3>Meja <?php echo $order['no_meja']; ?> (<?php echo $order['nama_pemesan']; ?>)</h3>
+                    <h3>Meja <?php echo $order['no_meja']; ?> (<?php echo htmlspecialchars($order['nama_pemesan']); ?>)</h3>
                     <p style="font-size: 0.8em; color: #ccc;">Masuk: <?php echo $order['timestamp']; ?></p>
                     <p>Status: <strong><?php echo $order['status_pesanan']; ?></strong></p>
-                    <hr style="border-color: #666;">
+                    <hr>
                     
                     <ul>
                         <?php 
@@ -70,18 +60,20 @@ $list_pesanan = fetch_all(query($sql_pesanan));
                         foreach ($details as $d):
                         ?>
                         <li>
-                            <b><?php echo $d['nama_menu']; ?> x<?php echo $d['jumlah']; ?></b><br>
-                            <?php if(!empty($d['catatan_varian'])) echo "<small>Varian: " . $d['catatan_varian'] . "</small><br>"; ?>
-                            <?php if(!empty($d['catatan_kustom'])) echo "<small style='color:yellow'>Note: " . $d['catatan_kustom'] . "</small>"; ?>
+                            <b><?php echo htmlspecialchars($d['nama_menu']); ?> x<?php echo $d['jumlah']; ?></b><br>
+                            <?php if(!empty($d['catatan_varian'])) echo "<small class='note'>Varian: " . htmlspecialchars($d['catatan_varian']) . "</small><br>"; ?>
+                            <?php if(!empty($d['catatan_kustom'])) echo "<small class='note custom-note'>Note: " . htmlspecialchars($d['catatan_kustom']) . "</small>"; ?>
                         </li>
                         <?php endforeach; ?>
                     </ul>
 
-                    <?php if ($order['status_pesanan'] == 'Diterima'): ?>
-                        <a href="index.php?action=update&id=<?php echo $order['id_pesanan']; ?>&status=Dibuat" class="btn btn-proses">Mulai Masak</a>
-                    <?php elseif ($order['status_pesanan'] == 'Dibuat'): ?>
-                        <a href="index.php?action=update&id=<?php echo $order['id_pesanan']; ?>&status=Selesai" class="btn btn-selesai" onclick="return confirm('Pesanan Selesai?')">Selesai</a>
-                    <?php endif; ?>
+                    <div class="order-actions">
+                        <?php if ($order['status_pesanan'] == 'Diterima'): ?>
+                            <a href="index.php?action=update&id=<?php echo $order['id_pesanan']; ?>&status=Dibuat" class="btn btn-proses">Mulai Masak</a>
+                        <?php elseif ($order['status_pesanan'] == 'Dibuat'): ?>
+                            <a href="index.php?action=update&id=<?php echo $order['id_pesanan']; ?>&status=Selesai" class="btn btn-selesai" onclick="return confirm('Pesanan Selesai?')">Selesai</a>
+                        <?php endif; ?>
+                    </div>
 
                 </div>
             <?php endforeach; ?>
