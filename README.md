@@ -49,8 +49,7 @@ Tujuan utama proyek ini adalah membuat aplikasi web yang memungkinkan pelanggan 
 ## 3. Teknologi yang Digunakan
 
 Sesuai syarat mata kuliah, proyek ini DIBANGUN TANPA FRAMEWORK.
-* **Frontend:** HTML, CSS, JavaScript (Vanilla/Native JS).
-* **Backend:** PHP (Vanilla/Native PHP).
+* **Frontend:** & **Backend:** FULL PHP (Vanilla/Native PHP) dan CSS.
 * **Database:** MySQL.
 
 ## 4. Rancangan Database (Awal)
@@ -78,12 +77,12 @@ Untuk menjaga kerapian, kita akan gunakan struktur folder berikut:
 │   ├── dashboard.php
 │   ├── crud_menu.php
 │   ├── crud_kategori.php
+│   ├── crud_varian.php
 │   ├── export_laporan.php
 │   └── logout.php
 │
 ├── dapur/                  # (Backend) Halaman khusus Dapur (Lihat Pesanan)
-│   ├── index.php           # (Tampilan Pesanan)
-│   └── api_get_pesanan.php # (File JSON untuk di-fetch oleh JS)
+│   └── index.php           # (Tampilan Pesanan)
 │
 ├── includes/               # (Backend) File-file pendukung
 │   ├── db_connect.php      # (Koneksi database)
@@ -91,10 +90,6 @@ Untuk menjaga kerapian, kita akan gunakan struktur folder berikut:
 │
 ├── css/                    # (Frontend) Semua file CSS
 │   └── style.css
-│
-├── js/                     # (Frontend) Semua file JavaScript
-│   ├── main.js             # (Logika keranjang, pop-up, checkout)
-│   └── dapur.js            # (Logika AJAX auto-refresh halaman dapur)
 │
 ├── img/                    # (Lain-lain) Tempat upload foto-foto menu
 │
@@ -108,16 +103,11 @@ Kita dibagi menjadi 2 tim (Frontend & Backend). Ini adalah tanggung jawab dan ti
 
 ### 🔵 Tim Frontend (3 Orang)
 
-Tugas utama: Fokus pada **Tampilan (View)** dan **Interaksi (Client-side JS)**.
+Tugas utama: Fokus pada **Tampilan (View)**.
 * Membuat `style.css` agar semua halaman (Menu, Admin, Dapur) terlihat rapi dan responsif.
-* Membuat `main.js` (di `index.php`):
-    * Logika Pop-up Varian.
     * Logika Keranjang (tambah/kurang/hapus).
     * Menyediakan input untuk `catatan_kustom`.
     * Mengirim data keranjang (Checkout) ke `proses_pesanan.php`.
-* Membuat `dapur.js` (di `dapur/index.php`):
-    * Logika `fetch` / AJAX untuk memanggil `api_get_pesanan.php` setiap 10 detik.
-    * Merender data pesanan baru ke HTML tanpa refresh halaman.
 * Mendesain/Menata file-file PHP yang dibuat Tim Backend (`index.php`, `admin/*.php`, `dapur/*.php`).
 * **(BARU)** Menambahkan tombol/link di `admin/dashboard.php` untuk memicu download laporan (link ke `export_laporan.php`).
 
@@ -128,41 +118,9 @@ Tugas utama: Fokus pada **Logika Server (PHP)** dan **Manajemen Data (MySQL)**.
 * Membuat `includes/db_connect.php` dan `functions.php`.
 * Membuat **seluruh** fungsionalitas di folder `/admin/` (Login, CRUD Kategori, Menu, Varian).
 * **(BARU)** Membuat file `admin/export_laporan.php` untuk meng-query data transaksi dan meng-generate file .csv.
-* Membuat **seluruh** fungsionalitas di folder `/dapur/` (Logika `index.php` untuk menampilkan data dan `api_get_pesanan.php` untuk mengirim data JSON).
+* Membuat **seluruh** fungsionalitas di folder `/dapur/` Logika `index.php` untuk menampilkan data.
 * Menyiapkan `index.php` dengan logika PHP untuk menampilkan data menu dari DB (agar Tim Frontend bisa menatanya).
 * Membuat `proses_pesanan.php` yang siap menerima data JSON dari `main.js` (Frontend) dan menyimpannya ke `tbl_pesanan` dan `tbl_pesanan_detail`.
-
-### 🤝 Titik Temu / "Kontrak" Penting
-
-1.  **Proses Checkout (`main.js` -> `proses_pesanan.php`)**
-    * **Frontend (JS)** akan mengirim data pesanan via `fetch()` (metode POST) dalam format **JSON**.
-    * **Backend (PHP)** harus siap menerima *raw data JSON* (bukan `$_POST`) menggunakan `json_decode(file_get_contents('php://input'))`.
-    * Contoh JSON yang dikirim:
-        ```json
-        {
-          "no_meja": 5,
-          "nama_pemesan": "Raditya",
-          "metode_bayar": "kasir",
-          "items": [
-            { 
-              "id_menu": 1, 
-              "jumlah": 2, 
-              "catatan_varian": "Panas, Level 1", 
-              "catatan_kustom": "" 
-            },
-            { 
-              "id_menu": 3, 
-              "jumlah": 1, 
-              "catatan_varian": "Topping: Telur", 
-              "catatan_kustom": "Tolong jangan pakai bawang" 
-            }
-          ]
-        }
-        ```
-
-2.  **Refresh Dapur (`dapur.js` -> `dapur/api_get_pesanan.php`)**
-    * **Backend (PHP)** membuat `api_get_pesanan.php` yang jika diakses akan mengembalikan data pesanan (misal: yang statusnya 'Diterima') dalam format **JSON**.
-    * **Frontend (JS)** akan memanggil file API tersebut setiap 10 detik untuk mendapat data JSON terbaru dan menampilkannya di Halaman Dapur.
 
 ## 7. Panduan Alur Kerja Git (Git Workflow)
 

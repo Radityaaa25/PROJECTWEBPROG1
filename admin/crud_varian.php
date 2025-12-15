@@ -91,29 +91,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kelola Varian Menu: <?php echo htmlspecialchars($menu['nama_menu']); ?></title>
-    <style>
-        /* CSS Sederhana untuk demo */
-        body { font-family: Arial, sans-serif; background-color: #f4f4f4; }
-        .container { max-width: 900px; margin: 30px auto; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
-        h1 { border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px;}
-        h2, h3 { margin-top: 20px; border-bottom: 1px dashed #eee; padding-bottom: 5px; }
-        .nav-links a { margin-right: 15px; text-decoration: none; color: #007bff; }
-        .form-group { margin-bottom: 15px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; background: #f9f9f9; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
-        .form-group input, .form-group select { padding: 8px; border: 1px solid #ccc; border-radius: 4px; margin-right: 10px; }
-        .form-group button { padding: 8px 15px; background-color: #ff5722; color: white; border: none; border-radius: 4px; cursor: pointer; }
-        .form-group.opsi button { background-color: #007bff; }
-        .alert-success { background-color: #d4edda; color: #155724; padding: 10px; border-radius: 5px; margin-bottom: 20px; font-weight: bold; }
-        .grup-box { border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #fff; }
-        .opsi-list { list-style: none; padding: 0; margin-top: 10px; }
-        .opsi-list li { padding: 8px 0; border-bottom: 1px dotted #eee; display: flex; justify-content: space-between; }
-        .opsi-list li:last-child { border-bottom: none; }
-        .aksi-opsi a { color: #dc3545; text-decoration: none; margin-left: 10px; font-size: 0.9em; }
-    </style>
+    <link rel="stylesheet" href="../css/style.css?v=3">
 </head>
 <body>
 
-    <div class="container">
+    <div class="container-admin">
         <h1>Kelola Varian untuk: <?php echo htmlspecialchars($menu['nama_menu']); ?></h1>
         <div class="nav-links">
             <a href="crud_menu.php">&larr; Kembali ke Daftar Menu</a>
@@ -124,21 +106,21 @@
             <div class="alert-success"><?php echo $pesan; ?></div>
         <?php endif; ?>
 
-        <div class="form-group">
+        <div class="form-card">
             <h3>Tambah Grup Varian Baru</h3>
             <form action="crud_varian.php?id_menu=<?php echo $id_menu; ?>" method="POST">
-                <div style="margin-bottom: 10px;">
+                <div>
                     <label for="nama_grup">Nama Grup (Cth: Suhu, Level Pedas)</label>
                     <input type="text" name="nama_grup" id="nama_grup" required>
                 </div>
-                <div style="margin-bottom: 10px;">
+                <div>
                     <label for="tipe_pilihan">Tipe Pilihan</label>
                     <select name="tipe_pilihan" id="tipe_pilihan" required>
                         <option value="radio">Radio (Pilih Satu)</option>
                         <option value="checkbox">Checkbox (Pilih Banyak)</option>
                     </select>
                 </div>
-                <button type="submit" name="tambah_grup">Tambah Grup</button>
+                <button type="submit" name="tambah_grup" class="btn btn-primary">Tambah Grup</button>
             </form>
         </div>
         
@@ -148,31 +130,35 @@
         <?php else: ?>
             <?php foreach ($list_grup as $grup): ?>
                 <div class="grup-box">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <h3 style="margin: 0;">
+                    <div class="grup-header">
+                        <h3>
                             <?php echo htmlspecialchars($grup['nama_grup']); ?> 
                             <span style="font-size: 0.8em; font-weight: normal; color: #666;">(<?php echo ucfirst($grup['tipe_pilihan']); ?>)</span>
                         </h3>
                         <a 
                             href="crud_varian.php?id_menu=<?php echo $id_menu; ?>&action=hapus_grup&id_grup=<?php echo $grup['id_grup_varian']; ?>" 
                             onclick="return confirm('Yakin hapus grup <?php echo htmlspecialchars($grup['nama_grup']); ?>?')" 
-                            style="color: #dc3545;"
+                            class="btn btn-danger" style="padding: 5px 10px;"
                         >
                             Hapus Grup
                         </a>
                     </div>
 
-                    <div class="form-group opsi">
+                    <div class="form-card" style="background: #e9ecef;">
                         <h4>Tambah Opsi untuk <?php echo htmlspecialchars($grup['nama_grup']); ?></h4>
                         <form action="crud_varian.php?id_menu=<?php echo $id_menu; ?>" method="POST">
                             <input type="hidden" name="id_grup_varian" value="<?php echo $grup['id_grup_varian']; ?>">
-                            <label for="nama_opsi">Nama Opsi (Cth: Dingin, Extra Pedas)</label>
-                            <input type="text" name="nama_opsi" placeholder="Nama Opsi" required style="width: 30%;">
-                            
-                            <label for="tambahan_harga">Tambahan Harga (Cth: 2000)</label>
-                            <input type="number" name="tambahan_harga" placeholder="Harga Tambahan" value="0" required style="width: 30%;">
-                            
-                            <button type="submit" name="tambah_opsi">Tambah Opsi</button>
+                            <div class="opsi-form-inline">
+                                <div>
+                                    <label for="nama_opsi">Nama Opsi</label>
+                                    <input type="text" name="nama_opsi" placeholder="Contoh: Dingin" required>
+                                </div>
+                                <div>
+                                    <label for="tambahan_harga">Tambahan Harga (Rp)</label>
+                                    <input type="number" name="tambahan_harga" placeholder="Contoh: 2000" value="0" required>
+                                </div>
+                                <button type="submit" name="tambah_opsi" class="btn btn-success" style="white-space: nowrap;">Tambah Opsi</button>
+                            </div>
                         </form>
                     </div>
 
@@ -183,12 +169,13 @@
                                 <li>
                                     <span>
                                         <?php echo htmlspecialchars($opsi['nama_opsi']); ?> 
-                                        (Rp <?php echo number_format($opsi['tambahan_harga'], 0, ',', '.'); ?>)
+                                        (<span style="color:#ff5722;"><?php echo format_rupiah($opsi['tambahan_harga']); ?></span>)
                                     </span>
-                                    <span class="aksi-opsi">
+                                    <span class="aksi">
                                         <a 
                                             href="crud_varian.php?id_menu=<?php echo $id_menu; ?>&action=hapus_opsi&id_opsi=<?php echo $opsi['id_opsi_varian']; ?>" 
                                             onclick="return confirm('Yakin hapus opsi <?php echo htmlspecialchars($opsi['nama_opsi']); ?>?')"
+                                            class="hapus"
                                         >
                                             Hapus
                                         </a>

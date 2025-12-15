@@ -166,36 +166,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CRUD Menu - Admin</title>
-  <style>
-        /* CSS Sederhana untuk demo */
-        body { font-family: Arial, sans-serif; background-color: #f4f4f4; }
-        .container { max-width: 1000px; margin: 30px auto; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
-        h1 { border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px;}
-        .nav-links a { margin-right: 15px; text-decoration: none; color: #007bff; }
-        .form-menu { background: #f9f9f9; padding: 15px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #eee; }
-        .form-menu div { margin-bottom: 10px; }
-        .form-menu label { display: block; margin-bottom: 5px; font-weight: bold; }
-        .form-menu input[type="text"], 
-        .form-menu input[type="number"], 
-        .form-menu textarea, 
-        .form-menu select,
-        .form-menu input[type="file"] { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        .form-menu button { padding: 8px 15px; background-color: #ff5722; color: white; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px; }
-        .form-menu button.update { background-color: #28a745; }
-        .form-menu a { text-decoration: none; color: #dc3545; margin-left: 10px; }
-        .alert-success { background-color: #d4edda; color: #155724; padding: 10px; border-radius: 5px; margin-bottom: 20px; font-weight: bold; }
-        .alert-error { background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-bottom: 20px; font-weight: bold; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        table, th, td { border: 1px solid #ddd; }
-        th, td { padding: 10px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        .aksi a { margin-right: 5px; text-decoration: none; color: #007bff; }
-        .aksi a.hapus { color: #dc3545; }
-        .foto-preview { max-width: 50px; max-height: 50px; object-fit: cover; border-radius: 4px; }
-    </style>
+  <link rel="stylesheet" href="../css/style.css?v=3">
 </head>
 <body>
-  <div class="container">
+  <div class="container-admin">
     <h1>Kelola Item Menu</h1>
     <div class="nav-links">
       <a href="dashboard.php">&larr; Kembali ke Dashboard</a>
@@ -209,7 +183,7 @@
       </div>
     <?php endif; ?>
 
-    <div class="form-menu">
+    <div class="form-card">
       <h3>
         <?php echo $menu_edit ? 'Ubah Menu: ' . htmlspecialchars($menu_edit['nama_menu']) : 'Tambah Menu Baru'; ?>
       </h3>
@@ -221,12 +195,12 @@
 
         <div>
           <label for="nama_menu">Nama Menu</label>
-          <input type="text" name="nama_menu" id="nama_menu" value="<?php echo $menu_edit ? htmlspecialchars($menu_edit['nama_menu']) : ''; ?> ">
+          <input type="text" name="nama_menu" id="nama_menu" value="<?php echo $menu_edit ? htmlspecialchars($menu_edit['nama_menu']) : ''; ?> " required>
         </div>
 
         <div>
           <label for="id_kategori">Kategori</label>
-          <select name="id_kategori" id="id_kategori">
+          <select name="id_kategori" id="id_kategori" required>
             <option value="">-- Pilih Kategori --</option>
             <?php foreach ($list_kategori as $kategori): ?>
               <?php $selected = $menu_edit && $menu_edit['id_kategori'] == $kategori['id_kategori'] ? 'selected' : ''; ?>
@@ -239,7 +213,7 @@
         
         <div>
           <label for="deskripsi">Deskripsi</label>
-          <textarea name="deskripsi" id="deskripsi" rows="3"><?php echo $menu_edit ? htmlspecialchars($menu_edit[$deskripsi]) : '' ?></textarea>
+          <textarea name="deskripsi" id="deskripsi" rows="3"><?php echo $menu_edit ? htmlspecialchars($menu_edit['deskripsi']) : '' ?></textarea>
         </div>
 
         <div>
@@ -256,17 +230,17 @@
           <?php endif; ?>
         </div>
 
-        <button type="submit" name="<?php echo $menu_edit ? 'update_menu' : 'tambah_menu'; ?>" class="<?php echo $menu_edit ? 'update' : ''; ?>">
+        <button type="submit" name="<?php echo $menu_edit ? 'update_menu' : 'tambah_menu'; ?>" class="btn <?php echo $menu_edit ? 'btn-success' : 'btn-primary'; ?>">
           <?php echo $menu_edit ? 'Update Menu' : 'Tambah Menu'; ?>
         </button>
           <?php if ($menu_edit): ?>
-            <a href="crud_menu.php">Batal</a>
+            <a href="crud_menu.php" class="btn btn-danger">Batal</a>
           <?php endif; ?>
       </form>
     </div>
 
     <h2>Daftar Menu (Total: <?php echo count($list_menu); ?>)</h2>
-    <table>
+    <table class="data-table">
       <thead>
         <tr>
           <th>Foto</th>
@@ -289,7 +263,7 @@
               </td>
               <td><?php echo htmlspecialchars($menu['nama_menu']); ?></td>
               <td><?php echo htmlspecialchars($menu['nama_kategori']); ?></td>
-              <td>Rp <?php echo number_format($menu['harga_dasar'], 0, ',', ','); ?></td>
+              <td><?php echo format_rupiah($menu['harga_dasar']); ?></td>
               <td class="aksi">
                 <a href="crud_menu.php?action=edit&id=<?php echo $menu['id_menu']; ?>">Edit</a>
                 <a href="crud_varian.php?id_menu=<?php echo $menu['id_menu']; ?>">Varian</a>

@@ -57,7 +57,7 @@ try {
     // Kosongkan keranjang
     unset($_SESSION['cart']);
 
-    // Tampilkan pesan sukses sederhana (Tanpa JS alert)
+    // Tampilkan pesan sukses sederhana
     echo "<!DOCTYPE html><html><head><title>Sukses</title><meta http-equiv='refresh' content='3;url=index.php?meja=$no_meja'></head>
     <body style='text-align:center; padding-top: 50px; font-family: sans-serif;'>
         <h1 style='color: green;'>Pesanan Berhasil!</h1>
